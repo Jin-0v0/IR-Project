@@ -1,0 +1,57 @@
+#mybatis
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath*:mybatis/mapper/*Mapper.xml
+#hikari连接池
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/doc_search?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: Elio123456
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      connection-timeout: 30000 #30*1000ms
+      idle-timeout: 600000 #10*60*1000ms
+      max-lifetime: 1800000 #30*60*1000ms
+      connection-test-query: select 1
+  servlet:
+    # 配置MultipartAutoConfiguration的一些上传属性
+    multipart:
+      enabled: true
+      max-file-size: 1024MB
+      max-request-size: 2048MB
+      file-size-threshold: 0
+      resolve-lazily: true
+  freemarker:
+    cache: false
+    expose-request-attributes: true #默认false
+    expose-session-attributes: true #默认false
+    expose-spring-macro-helpers: true #默认true
+    suffix: .ftl #spring-boot2.2.0改为了ftlh
+    settings:
+      {datetimeFormat: yyyy-MM-dd HH:mm:ss}
+    request-context-attribute: rc
+  # 静态资源映射
+  mvc:
+    static-path-pattern: /**
+  # 2.4版本后变成了web前缀
+  web:
+    resources:
+     static-locations:
+       - classpath:/META-INF/resources/
+       - classpath:/static/
+       - classpath:/public/
+       - classpath:/resources/
+       # 上面4个是默认的,下面一个指定自定义映射路径
+       - file:${upload.dir}
+
+# 配置文件上传路径
+upload:
+  dir: C:/ADatas/A/program/IdeaProjects/doc-search/files/
+# 配置索引存放目录
+lucene:
+  idx:
+    dir: C:/ADatas/A/program/IdeaProjects/doc-search/idx/
